@@ -1,0 +1,47 @@
+version: '3.9'
+
+services:
+  go_service_a:
+    build:
+      context: ./service_a
+    container_name: go-service-a
+    ports:
+      - 8080:8080
+    depends_on:
+      - nats
+      # - sqlite
+    environment:
+      - NATS_URL=nats://nats-server:4222
+      - SQLITE_DB_PATH=/persistent-data/sqlite_db.db
+      - APP_PORT=8080
+    volumes:
+      - ./sqlite-data:/persistent-data
+
+  go_service_b:
+    build:
+      context: ./service_b
+    container_name: go-service-b
+    depends_on:
+      - nats
+      # - sqlite
+    environment:
+      - NATS_URL=nats://nats-server:4222
+
+  nats:
+    image: nats:latest
+    container_name: nats-server
+    ports:
+      - "4222:4222" # NATS client port
+      - "8222:8222" # NATS monitoring port
+
+  # sqlite:
+  #   image: nouchka/sqlite3 
+  #   container_name: sqlite-db
+  #   volumes:
+  #     - sqlite-data:/data
+  #   environment:
+  #     - SQLITE_DATABASE=sqlite_db.db
+
+# volumes:
+#   sqlite-data:
+#     driver: local
