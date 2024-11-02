@@ -27,12 +27,14 @@ jobs:
           path: |
             ~/go/pkg/mod
             ~/.cache/go-build
-          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          key: ${{ runner.os }}-go-${{ hashFiles('service_a/go.sum') }}
           restore-keys: |
             ${{ runner.os }}-go-
 
       - name: Install dependencies
         run: go mod tidy
+        working-directory: ./service_a  # Arbeitsverzeichnis für Abhängigkeiten festlegen
 
       - name: Run tests
         run: go test -v ./...
+        working-directory: ./service_a  # Arbeitsverzeichnis für Tests festlegen
