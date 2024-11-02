@@ -19,6 +19,7 @@
 
     - Code Quality: Clean, modular, and concise with good naming conventions.
     - Testing: At least one unit test for core functionality.
+    
     - Docker Compose Setup:
         Both services and NATS should run via docker-compose up.
         The web service is accessible from the Docker host with exposed ports.
@@ -32,6 +33,9 @@ The solution now realises 2 services in go in which the described requirements a
 In my opinion, this is where the opinion of domain experts is needed. Is eventual consistency sufficient here?  Should we go the extra mile and implement the rollback / transaction mechanism or even the outbox pattern?
 
 2. The implemented unit test currently mainly tests third-party code / functionality. I would not normally implement this as I am now dependent on technical aspects and components in the test. However, there is no domain logic in the services that can ideally be tested, for this reason the test should act as an example and test the post endpoint including the underlying logic
+
+3. Implemented ci-action to execute the tests after pushing new changes / pr.
+[![Go CI](https://github.com/SoftTechNick/coding-challenge/actions/workflows/go-ci.yml/badge.svg)](https://github.com/SoftTechNick/coding-challenge/actions/workflows/go-ci.yml)
 
 # 🚀 Run
 To run the services with nats, simply use the following command  </br>
